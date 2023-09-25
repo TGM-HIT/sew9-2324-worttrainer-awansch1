@@ -1,12 +1,15 @@
 package at.ac.tgm.awansch;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class WortBildPaar {
     private String wort;
     private String url;
 
     public WortBildPaar(String wort, String url) {
-        this.wort = wort;
-        this.url = url;
+        setWort(wort);
+        setUrl(url);
     }
 
     public String getWort() {
@@ -14,7 +17,11 @@ public class WortBildPaar {
     }
 
     public void setWort(String wort) {
-        this.wort = wort;
+        if(wort != null && wort.length() > 1) {
+            this.wort = wort;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public String getUrl() {
@@ -22,6 +29,11 @@ public class WortBildPaar {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        try {
+            new URL(url);
+            this.url = url;
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

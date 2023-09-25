@@ -16,11 +16,15 @@ public class WortBildPaarTests {
     public void setWortTest() {
         w.setWort("Hund");
         Assertions.assertEquals(w.getWort(), "Hund");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> w.setWort(""));
     }
 
     @Test
     public void setUrlTest() {
         w.setUrl("https://ais.badische-zeitung.de/piece/0b/5e/72/bc/190739132.jpg");
         Assertions.assertEquals(w.getUrl(), "https://ais.badische-zeitung.de/piece/0b/5e/72/bc/190739132.jpg");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> w.setUrl(""));
     }
 }
