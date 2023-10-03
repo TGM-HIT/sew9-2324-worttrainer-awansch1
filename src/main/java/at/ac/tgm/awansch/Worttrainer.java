@@ -2,6 +2,7 @@ package at.ac.tgm.awansch;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,15 +24,6 @@ public class Worttrainer {
         wortBildPaare.add(paar);
     }
 
-    public void zufaelligesPaarAuswaehlen() {
-        if (!wortBildPaare.isEmpty()) {
-            Random random = new Random();
-            aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
-        } else {
-            aktuellesPaar = null;
-        }
-    }
-
     public boolean wortErraten(String vermutetesWort) {
         if (aktuellesPaar != null) {
             return aktuellesPaar.getWort().equalsIgnoreCase(vermutetesWort);
@@ -48,32 +40,42 @@ public class Worttrainer {
         }*/
     }
 
-    public void anzeigenBildUndEingabe() throws MalformedURLException {
-        if (aktuellesPaar != null) {
-            ImageIcon icon = new ImageIcon(new URL(aktuellesPaar.getUrl()));
+    public void start() throws MalformedURLException {
+        Random random = new Random();
+        aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
 
-            String geratenesWort = (String) JOptionPane.showInputDialog(
-                    null,
-                    "Was siehst du auf dem Bild?",
-                    "Bild",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    icon,
-                    null,
-                    "");
+        while(true) {
+            if (aktuellesPaar != null) {
+                ImageIcon icon = new ImageIcon(new URL(aktuellesPaar.getUrl()));
 
-            if (geratenesWort != null && !geratenesWort.isEmpty()) {
-                boolean istRichtig = wortErraten(geratenesWort);
+                Image scaledImage = icon.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+                ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
 
-                if (istRichtig) {
-                    JOptionPane.showMessageDialog(null, "Richtig!");
+                String geratenesWort = (String) JOptionPane.showInputDialog(
+                        null,
+                        /*buildStatsString() + */"\n\nWas siehst du auf dem Bild?",
+                        null,
+                        JOptionPane.PLAIN_MESSAGE,
+                        scaledImageIcon, // Use the scaled ImageIcon here
+                        null,
+                        ""
+                );
+
+                if (geratenesWort != null && !geratenesWort.isEmpty()) {
+                    boolean istRichtig = wortErraten(geratenesWort);
+
+                    if (istRichtig) {
+                        JOptionPane.showMessageDialog(null, "Richtig!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Falsch.");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Falsch.");
+                    aktuellesPaar = this.wortBildPaare.get(random.nextInt(wortBildPaare.size()));
+                    break;
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Kein Wort eingegeben.");
+                JOptionPane.showMessageDialog(null, "Kein aktuelles Wort-Bild-Paar ausgewählt.");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Kein aktuelles Wort-Bild-Paar ausgewählt.");
         }
     }
 
@@ -83,11 +85,8 @@ public class Worttrainer {
         worttrainer.wortBildPaarHinzufuegen(new WortBildPaar("Hund", "https://images.gutefrage.net/media/fragen/bilder/suesser-hund-aber-welche-rasse/0_original.jpg"));
         worttrainer.wortBildPaarHinzufuegen(new WortBildPaar("Katze", "https://ais.badische-zeitung.de/piece/0b/5e/72/bc/190739132.jpg"));
 
-        // Beispiel: Zufälliges Wort-Bild-Paar auswählen
-        worttrainer.zufaelligesPaarAuswaehlen();
-
         // Anzeigen des Bilds und der Eingabeaufforderung
-        worttrainer.anzeigenBildUndEingabe();
+        worttrainer.start();
     }
 }
 
