@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class WortBildPaar {
     private String wort;
-    private String url;
+    private URL url;
 
     public WortBildPaar(String wort, String url) {
         setWort(wort);
@@ -24,14 +24,13 @@ public class WortBildPaar {
         }
     }
 
-    public String getUrl() {
+    public URL getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         try {
-            new URL(url);
-            this.url = url;
+            this.url = new URL(url);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }

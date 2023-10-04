@@ -4,7 +4,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.*;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +23,7 @@ public class Worttrainer {
         wortBildPaare.add(paar);
     }
 
-    public boolean wortErraten(String vermutetesWort) {
+    public boolean raten(String vermutetesWort) {
         if (aktuellesPaar != null) {
             return aktuellesPaar.getWort().equalsIgnoreCase(vermutetesWort);
         }
@@ -40,13 +39,13 @@ public class Worttrainer {
         }*/
     }
 
-    public void start() throws MalformedURLException {
+    public void start() {
         Random random = new Random();
         aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
 
         while(true) {
             if (aktuellesPaar != null) {
-                ImageIcon icon = new ImageIcon(new URL(aktuellesPaar.getUrl()));
+                ImageIcon icon = new ImageIcon(aktuellesPaar.getUrl());
 
                 Image scaledImage = icon.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
                 ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
@@ -62,7 +61,7 @@ public class Worttrainer {
                 );
 
                 if (geratenesWort != null && !geratenesWort.isEmpty()) {
-                    boolean istRichtig = wortErraten(geratenesWort);
+                    boolean istRichtig = raten(geratenesWort);
 
                     if (istRichtig) {
                         JOptionPane.showMessageDialog(null, "Richtig!");
@@ -79,7 +78,7 @@ public class Worttrainer {
         }
     }
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
         // Beispiel Wort-Bild-Paare
         Worttrainer worttrainer = new Worttrainer();
         worttrainer.wortBildPaarHinzufuegen(new WortBildPaar("Hund", "https://images.gutefrage.net/media/fragen/bilder/suesser-hund-aber-welche-rasse/0_original.jpg"));

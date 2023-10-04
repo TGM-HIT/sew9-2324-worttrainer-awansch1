@@ -9,7 +9,7 @@ public class WortBildPaarTests {
     @Test
     public void KonstruktorTest() {
         Assertions.assertEquals(w.getWort(), "Test");
-        Assertions.assertEquals(w.getUrl(), "https://images.gutefrage.net/media/fragen/bilder/suesser-hund-aber-welche-rasse/0_original.jpg");
+        Assertions.assertEquals(w.getUrl().toString(), "https://images.gutefrage.net/media/fragen/bilder/suesser-hund-aber-welche-rasse/0_original.jpg");
     }
 
     @Test
@@ -23,7 +23,7 @@ public class WortBildPaarTests {
     @Test
     public void setUrlTest() {
         w.setUrl("https://ais.badische-zeitung.de/piece/0b/5e/72/bc/190739132.jpg");
-        Assertions.assertEquals(w.getUrl(), "https://ais.badische-zeitung.de/piece/0b/5e/72/bc/190739132.jpg");
+        Assertions.assertEquals(w.getUrl().toString(), "https://ais.badische-zeitung.de/piece/0b/5e/72/bc/190739132.jpg");
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> w.setUrl(""));
     }
