@@ -3,19 +3,41 @@ package at.ac.tgm.awansch;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Worttrainer {
-    private List<WortBildPaar> wortBildPaare;
+    private ArrayList<WortBildPaar> wortBildPaare;
     private WortBildPaar aktuellesPaar;
     private Statistik statistik;
+    private Speicherstrategie speicherstrategie;
+    private final String path = "src/main/resources/words.json";
 
     public Worttrainer() {
         this.wortBildPaare = new ArrayList<>();
         this.aktuellesPaar = null;
         this.statistik = new Statistik();
+        this.speicherstrategie = new JsonSpeicherstrategie();
+    }
+
+   public void speichern() {
+        try {
+            this.speicherstrategie.speichern(path, this);
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+   }
+
+    public void laden() {
+        Worttrainer geladen = this.speicherstrategie.laden(path, this);
+        if(geladen != null) {
+            this.wortBildPaare = geladen.getWortBildPaare();
+            this.aktuellesPaar = geladen.getAktuellesPaar();
+            this.statistik.setKorrekteVersuche(geladen.getStatistik().getKorrekteVersuche());
+            this.statistik.setFalscheVersuche(geladen.getStatistik().getFalscheVersuche());
+            this.statistik.setVersuche(geladen.getStatistik().getVersuche());
+        }
     }
 
     public void wortBildPaarHinzufuegen(WortBildPaar paar) {
@@ -30,6 +52,7 @@ public class Worttrainer {
     }
 
     public void start() {
+        laden();
         Random random = new Random();
         aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
 
@@ -57,19 +80,37 @@ public class Worttrainer {
                     if (istRichtig) {
                         JOptionPane.showMessageDialog(null, "Richtig!");
                         statistik.korrekteVersucheErhoehen();
+                        aktuellesPaar = this.wortBildPaare.get(random.nextInt(wortBildPaare.size()));
                     } else {
                         JOptionPane.showMessageDialog(null, "Falsch.");
                         statistik.falscheVersucheErhoehen();
                     }
                 } else {
-                    aktuellesPaar = this.wortBildPaare.get(random.nextInt(wortBildPaare.size()));
                     break;
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Kein aktuelles Wort-Bild-Paar ausgewählt.");
+                this.speichern();
             }
-            aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
         }
+    }
+
+    public ArrayList<WortBildPaar> getWortBildPaare() {
+        return this.wortBildPaare;
+    }
+
+    public void setWortBildPaare(ArrayList<WortBildPaar> wortBildPaare) {
+        this.wortBildPaare = wortBildPaare;
+    }
+
+    public WortBildPaar getAktuellesPaar() {
+        return this.aktuellesPaar;
+    }
+
+    public void setWortBildPaar(WortBildPaar wortBildPaar) {
+        this.aktuellesPaar = wortBildPaar;
+    }
+
+    public Statistik getStatistik() {
+        return this.statistik;
     }
 
     public static void main(String[] args) {

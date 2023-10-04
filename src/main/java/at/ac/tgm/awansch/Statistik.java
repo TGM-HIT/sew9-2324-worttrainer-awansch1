@@ -15,6 +15,10 @@ public class Statistik {
         this.versuche++;
     }
 
+    public void setVersuche(int versuche) {
+        this.versuche = versuche;
+    }
+
     public int getVersuche() {
         return this.versuche;
     }
@@ -22,6 +26,10 @@ public class Statistik {
 
     public void korrekteVersucheErhoehen() {
         this.korrekteVersuche++;
+    }
+
+    public void setKorrekteVersuche(int korrekteVersuche) {
+        this.korrekteVersuche = korrekteVersuche;
     }
 
     public int getKorrekteVersuche() {
@@ -34,6 +42,10 @@ public class Statistik {
 
     public int getFalscheVersuche() {
         return this.falscheVersuche;
+    }
+
+    public void setFalscheVersuche(int falscheVersuche) {
+        this.falscheVersuche = falscheVersuche;
     }
 
     @Override
