@@ -74,6 +74,7 @@ public class Worttrainer {
             } else {
                 JOptionPane.showMessageDialog(null, "Kein aktuelles Wort-Bild-Paar ausgewählt.");
             }
+            aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
         }
     }
 
