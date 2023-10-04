@@ -35,4 +35,9 @@ public class Statistik {
     public int getFalscheVersuche() {
         return this.falscheVersuche;
     }
+
+    @Override
+    public String toString() {
+        return "Versuche: " + this.versuche + "\nRichtig: " + this.korrekteVersuche + "\nFalsch: " + this.falscheVersuche;
+    }
 }

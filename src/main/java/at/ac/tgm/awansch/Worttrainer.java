@@ -29,15 +29,6 @@ public class Worttrainer {
         return false;
     }
 
-    public void statistikAktualisieren(boolean istKorrekteVermutung) {
-        /*statistik.gesamtVersucheErhoehen();
-        if (istKorrekteVermutung) {
-            statistik.korrekteVersucheErhoehen();
-        } else {
-            statistik.falscheVersucheErhoehen();
-        }*/
-    }
-
     public void start() {
         Random random = new Random();
         aktuellesPaar = wortBildPaare.get(random.nextInt(wortBildPaare.size()));
@@ -51,7 +42,7 @@ public class Worttrainer {
 
                 String geratenesWort = (String) JOptionPane.showInputDialog(
                         null,
-                        /*buildStatsString() + */"\n\nWas siehst du auf dem Bild?",
+                        statistik.toString() + "\n\nWas siehst du auf dem Bild?",
                         null,
                         JOptionPane.PLAIN_MESSAGE,
                         scaledImageIcon, // Use the scaled ImageIcon here
@@ -61,11 +52,14 @@ public class Worttrainer {
 
                 if (geratenesWort != null && !geratenesWort.isEmpty()) {
                     boolean istRichtig = raten(geratenesWort);
+                    statistik.versucheErhoehen();
 
                     if (istRichtig) {
                         JOptionPane.showMessageDialog(null, "Richtig!");
+                        statistik.korrekteVersucheErhoehen();
                     } else {
                         JOptionPane.showMessageDialog(null, "Falsch.");
+                        statistik.falscheVersucheErhoehen();
                     }
                 } else {
                     aktuellesPaar = this.wortBildPaare.get(random.nextInt(wortBildPaare.size()));
