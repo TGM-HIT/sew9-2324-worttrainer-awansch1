@@ -3,7 +3,6 @@ package at.ac.tgm.awansch;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.*;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
